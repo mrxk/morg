@@ -67,7 +67,12 @@ This command will invoke `fzf` on the notes directory. Queries are resolved
 using `ripgrep` to search within notes. The preview window is populated by
 `mdless`. The following key bindings are provided.
 
-* <enter> opens the selected not for editing.
-* <c-c> creates a new note.
-* <c-d> deletes the selected note.
-* <c-h> shows the key bindings.
+* ?       : toggle the preview window
+* <ctrl-c>: create a new note
+* <ctrl-d>: delete currently selected note
+* <ctrl-h>: show keybindings
+* <ctrl-n>: scroll preview window down
+* <ctrl-p>: scroll preview window up
+* <ctrl-w>: toggle preview wrap
+* <enter> : edit selected note
+

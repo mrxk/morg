@@ -104,9 +104,14 @@ relink () {
 }
 
 keybindings () {
-    echo "ctrl-d: delete currently selected note"
+    echo "?: toggle preview window"
     echo "ctrl-c: create a new note"
+    echo "ctrl-d: delete currently selected note"
     echo "ctrl-h: show keybindings"
+    echo "ctrl-n: scroll preview window down"
+    echo "ctrl-p: scroll preview window up"
+    echo "ctrl-w: toggle preview wrap"
+    echo "enter: edit selected note"
     read -p "Enter to continue" trash
 }
 
@@ -116,15 +121,18 @@ show () {
     RG_PREFIX="rg -l --no-heading  --smart-case --sortr modified"
     FZF_DEFAULT_COMMAND="${RG_PREFIX} ''" \
       fzf --bind "change:reload(${RG_PREFIX} {q} || true)" \
-          --bind "enter:execute(${0} edit {})+reload(${RG_PREFIX} {q} || true)" \
+          --bind "?:toggle-preview" \
           --bind "ctrl-c:execute(${0} create)+reload(${RG_PREFIX} {q} || true)" \
           --bind "ctrl-d:execute(${0} delete {})+reload(${RG_PREFIX} {q} || true)" \
           --bind "ctrl-h:execute(${0} keybindings)" \
+          --bind "ctrl-n:preview-down" \
+          --bind "ctrl-p:preview-up" \
+          --bind "ctrl-w:toggle-preview-wrap" \
+          --bind "enter:execute(${0} edit {})+reload(${RG_PREFIX} {q} || true)" \
           --prompt "search (ctrl-h for help)> " \
-          --ansi \
           --phony \
-          --preview "mdless {}" \
-          --preview-window 'right,50%,border' \
+          --preview "mdless -P {}" \
+          --preview-window 'right:60%' \
           --layout reverse \
           --border \
           --info hidden
