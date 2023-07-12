@@ -132,10 +132,10 @@ show () {
           --prompt "search (ctrl-h for help)> " \
           --phony \
           --preview "/app/view.py {}" \
-          --preview-window 'right:60%' \
+          --preview-window 'bottom:80%' \
           --layout reverse \
           --border \
-          --info hidden
+          --info inline
     done
 }
 
