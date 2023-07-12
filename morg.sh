@@ -131,7 +131,7 @@ show () {
           --bind "enter:execute(${0} edit {})+reload(${RG_PREFIX} {q} || true)" \
           --prompt "search (ctrl-h for help)> " \
           --phony \
-          --preview "mdless -P {}" \
+          --preview "/app/view.py {}" \
           --preview-window 'right:60%' \
           --layout reverse \
           --border \

@@ -3,7 +3,7 @@
 This project is simple glue that combines
 [fzf](https://github.com/junegunn/fzf),
 [ripgrep](https://github.com/BurntSushi/ripgrep),
-[mdless](https://github.com/ttscoff/mdless), [vim](https://www.vim.org/) to
+[rich](https://github.com/Textualize/rich), and [vim](https://www.vim.org/) to
 help me manage notes.  It is opinionated and tailored for my usage. I love
 [orgmode](https://orgmode.org/)  and [tiddlywiki](https://tiddlywiki.com/) but
 they don't work for me.
@@ -14,6 +14,7 @@ I was looking for the following features:
 * Quick search across all note content
 * Editing with vim
 * Linking between notes (with automatic re-linking when a title changes)
+* Syntax highlighting of code blocks
 
 The Dockerfile, vimrc, and morg.sh files in this repository work together to
 produce a note taking environment that works for me.
@@ -64,8 +65,8 @@ docker run --rm -it -v $(pwd)/morg ghcr.io/mrxk/morg:main
 ```
 
 This command will invoke `fzf` on the notes directory. Queries are resolved
-using `ripgrep` to search within notes. The preview window is populated by
-`mdless`. The following key bindings are provided.
+using `ripgrep` to search within notes. The preview window is populated by the
+`view.py` script in this repository. The following key bindings are provided.
 
 * ?       : toggle the preview window
 * <ctrl-c>: create a new note
