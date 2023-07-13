@@ -81,7 +81,9 @@ edit () {
     # if unchanged, do not update original
     diff "${work_file}" "${MORG_ROOT}/${title}" && return 0
 
-    mv -f "${work_file}" "${MORG_ROOT}/${title}"
+    # preserve creaion timestamp
+    chmod +w "${MORG_ROOT}/${title}"
+    cat "${work_file}" > "${MORG_ROOT}/${title}"
     chmod a-w "${MORG_ROOT}/${title}"
     if [ "${title}" != "${orig_title}" ]
     then
@@ -118,7 +120,7 @@ keybindings () {
 show () {
     while :
     do
-    RG_PREFIX="rg -l --no-heading  --smart-case --sortr modified"
+    RG_PREFIX="rg -l --no-heading  --smart-case --sortr created"
     FZF_DEFAULT_COMMAND="${RG_PREFIX} ''" \
       fzf --bind "change:reload(${RG_PREFIX} {q} || true)" \
           --bind "?:toggle-preview" \
@@ -132,10 +134,10 @@ show () {
           --prompt "search (ctrl-h for help)> " \
           --phony \
           --preview "/app/view.py {}" \
-          --preview-window 'bottom:80%' \
+          --preview-window 'right:60%' \
           --layout reverse \
           --border \
-          --info inline
+          --info hidden
     done
 }
 

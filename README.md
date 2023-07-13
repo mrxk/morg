@@ -56,6 +56,7 @@ mappings modifications are made to the default vim environment.
   the selected note.
 * The `gf` normal mode mapping edits the note under the cursor. If the note
   does not exist it is crated.
+* The `gv` normal mode mapping shows the rendered view of the current note.
 
 ### Browse notes
 

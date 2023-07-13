@@ -11,4 +11,4 @@ with open(sys.argv[1]) as f:
   markdown = Markdown(f.read(), hyperlinks=False)
 
 box = Panel(markdown, getattr(box, "SQUARE"))
-Console(force_terminal=True, soft_wrap=True).print(box)
+Console(force_terminal=True, soft_wrap=False).print(box)
