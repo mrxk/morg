@@ -37,7 +37,7 @@ create () {
     then
         echo "${filename}" > "${work_file}"
     fi
-    vim "+set filetype=markdown" "${work_file}"
+    vim "${work_file}"
     local title=$(head -1 "${work_file}"|xargs) # strip whitespace
     if [ -z "${title}" ]
     then
@@ -70,7 +70,7 @@ edit () {
     trap "rm -f ${work_file}" SIGINT
     trap "rm -f ${work_file}" SIGKILL
     cp "${MORG_ROOT}/${filename}" "${work_file}"
-    vim "+set filetype=markdown" "${work_file}"
+    vim "${work_file}"
     title=$(head -1 "${work_file}"|xargs) # strip whitespace
     if [ -z "${title}" ]
     then
@@ -82,15 +82,20 @@ edit () {
     diff "${work_file}" "${MORG_ROOT}/${title}" && return 0
 
     # preserve creaion timestamp
-    chmod +w "${MORG_ROOT}/${title}"
-    cat "${work_file}" > "${MORG_ROOT}/${title}"
-    chmod a-w "${MORG_ROOT}/${title}"
+    local mtime=$(date -R -r "${MORG_ROOT}/${filename}")
+    mv -f "${work_file}" "${MORG_ROOT}/${title}"
     if [ "${title}" != "${orig_title}" ]
     then
         rm -f "${MORG_ROOT}/${filename}"
         relink "${orig_title}" "${title}"
-        echo "${title}" # so currently editing files can update
     fi
+    chmod a-w "${MORG_ROOT}/${title}"
+    touch -m -d "${mtime}" "${MORG_ROOT}/${title}"
+}
+
+
+search () {
+    rg -l "${@:-''}" | xargs -d '\n' ls -1t
 }
 
 relink () {
@@ -120,7 +125,7 @@ keybindings () {
 show () {
     while :
     do
-    RG_PREFIX="rg -l --no-heading  --smart-case --sortr created"
+    RG_PREFIX="${0} search"
     FZF_DEFAULT_COMMAND="${RG_PREFIX} ''" \
       fzf --bind "change:reload(${RG_PREFIX} {q} || true)" \
           --bind "?:toggle-preview" \
@@ -155,6 +160,10 @@ case "${1:-}" in
         ;;
     "keybindings")
         keybindings
+        ;;
+    "search")
+        shift
+        search "${@}"
         ;;
     "show")
         show

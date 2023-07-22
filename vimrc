@@ -1,5 +1,4 @@
 set isfname+=32
-set number
 autocmd BufEnter * syntax on | set ft=markdown
 imap <c-x><c-f> <c-r>=fzf#vim#complete#path("find . -path '*/\.*' -prune -o -type f -print -o -type l -print \| sed 's:^..::'",{'options': ['--layout=reverse','--info=hidden','--preview', 'mdless {}']})<cr>
 nnoremap <silent> gl :call fzf#run({'sink':'GetNoteLink', 'options': ['--layout=reverse','--info=hidden','--preview', 'mdless {}']})<cr>
