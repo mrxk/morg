@@ -95,7 +95,7 @@ edit () {
 
 
 search () {
-    rg -l "${@:-''}" | xargs -d '\n' ls -1t
+    rg -l "${@}" | xargs  --no-run-if-empty --delimiter='\n' ls -1t
 }
 
 relink () {
@@ -117,6 +117,7 @@ keybindings () {
     echo "ctrl-h: show keybindings"
     echo "ctrl-n: scroll preview window down"
     echo "ctrl-p: scroll preview window up"
+    echo "ctrl-v: view note full screen"
     echo "ctrl-w: toggle preview wrap"
     echo "enter: edit selected note"
     read -p "Enter to continue" trash
@@ -134,6 +135,7 @@ show () {
           --bind "ctrl-h:execute(${0} keybindings)" \
           --bind "ctrl-n:preview-down" \
           --bind "ctrl-p:preview-up" \
+          --bind "ctrl-v:execute(/app/view.py -p {})" \
           --bind "ctrl-w:toggle-preview-wrap" \
           --bind "enter:execute(${0} edit {})+reload(${RG_PREFIX} {q} || true)" \
           --prompt "search (ctrl-h for help)> " \

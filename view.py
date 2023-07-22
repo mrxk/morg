@@ -7,8 +7,21 @@ from rich.markdown import Markdown
 from rich.panel import Panel
 from rich.style import Style
 
-with open(sys.argv[1]) as f:
+page = False
+path = sys.argv[1]
+
+if path == "-p":
+  page = True
+  path = sys.argv[2]
+
+with open(path) as f:
   markdown = Markdown(f.read(), hyperlinks=False)
 
 box = Panel(markdown, getattr(box, "SQUARE"))
-Console(force_terminal=True, soft_wrap=False).print(box)
+c = Console(force_terminal=True, soft_wrap=False)
+
+if page == True:
+  with c.pager(styles=True):
+    c.print(box)
+else:
+  c.print(box)

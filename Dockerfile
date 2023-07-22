@@ -11,6 +11,7 @@ RUN apt-get update
 RUN apt install -y vim fzf ripgrep
 RUN apt install -y python3 python3-pygments python3-venv
 RUN apt install -y doas
+RUN apt install -y less
 
 RUN python3 -m venv /usr/lib/rich
 RUN /usr/lib/rich/bin/pip3 install rich
@@ -28,5 +29,6 @@ RUN chown -R morg:morg /home/morg && \
     chown -R morg:morg /app
 USER morg
 ENV MORG_ROOT /morg
+ENV PAGER less -RS
 
 ENTRYPOINT ["/app/morg.sh"]
