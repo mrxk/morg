@@ -68,12 +68,33 @@ This command will invoke `fzf` on the notes directory. Queries are resolved
 using `ripgrep` to search within notes. The preview window is populated by the
 `view.py` script in this repository. The following key bindings are provided.
 
-* ?       : toggle the preview window
-* <ctrl-c>: create a new note
-* <ctrl-d>: delete currently selected note
-* <ctrl-h>: show keybindings
-* <ctrl-n>: scroll preview window down
-* <ctrl-p>: scroll preview window up
-* <ctrl-w>: toggle preview wrap
-* <enter> : edit selected note
+* ?: toggle the preview window
+* `<ctrl-c>`: create a new note
+* `<ctrl-d>`: delete currently selected note
+* `<ctrl-h>`: show keybindings
+* `<ctrl-n>`: scroll preview window down
+* `<ctrl-p>`: scroll preview window up
+* `<ctrl-w>`: toggle preview wrap
+* `<enter>`: edit selected note
 
+## Integration
+
+On a mac, I have scripts like the following in my `$PATH`. This allows me to
+capture a note quickly or see all notes from the shell or from a spotlight
+search by executing either `ncap` or `nlist`.
+
+### ncap
+
+```javascript
+#!/usr/bin/osascript -l JavaScript
+var iterm = Application("iTerm");
+iterm.createWindowWithDefaultProfile({"command": "/usr/local/bin/docker run --rm -it -v ${HOME}/.notes:/morg ghcr.io/mrxk/morg:main create"})
+```
+
+### nlist
+
+```javascript
+#!/usr/bin/osascript -l JavaScript
+var iterm = Application("iTerm");
+iterm.createWindowWithDefaultProfile({"command": "/usr/local/bin/docker run --rm -it -v ${HOME}/.notes:/morg ghcr.io/mrxk/morg:main"})
+```
