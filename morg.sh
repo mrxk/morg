@@ -16,6 +16,7 @@ usage () {
     >&2 echo "    edit [title]   - edit a note"
     >&2 echo "    delete [title] - deete a note"
     >&2 echo "    keybindings    - show key bindings"
+    >&2 echo "    search         - search for notes"
     >&2 echo "    show           - show all notes"
 }
 
@@ -53,16 +54,8 @@ create () {
     fi
 }
 
-delete () {
-    local filename=${1}
-    read -p "Delete ${1} [y/N]? " answer
-    if [ "${answer}" == "y" ]
-    then
-        rm -f "${MORG_ROOT}/${filename}"
-    fi
-}
-
 edit () {
+    # required filename
     local filename=${1}
     local orig_title=$(head -1 "${filename}"|xargs) # strip whitespace
     work_file=$(mktemp)
@@ -93,21 +86,14 @@ edit () {
     touch -m -d "${mtime}" "${MORG_ROOT}/${title}"
 }
 
-
-search () {
-    rg -l "${@}" | xargs  --no-run-if-empty --delimiter='\n' ls -1t
-}
-
-relink () {
-    local orig_title=${1}
-    local new_title=${2}
-    find "${MORG_ROOT}" -type f | while read file
-    do
-      local mtime=$(date -R -r "${file}")
-      sed  -i "s/\[\[\s*${orig_title}\s*\]\]/\[\[${new_title}\]\]/g" "${file}"
-      touch -m -d "${mtime}" "${file}"
-    done
-    echo "${new_title}" > /tmp/RELINK
+delete () {
+    # required filename
+    local filename=${1}
+    read -p "Delete ${1} [y/N]? " answer
+    if [ "${answer}" == "y" ]
+    then
+        rm -f "${MORG_ROOT}/${filename}"
+    fi
 }
 
 keybindings () {
@@ -121,6 +107,23 @@ keybindings () {
     echo "ctrl-w: toggle preview wrap"
     echo "enter: edit selected note"
     read -p "Enter to continue" trash
+}
+
+relink () {
+    # required original filename and new filename
+    local orig_title=${1}
+    local new_title=${2}
+    find "${MORG_ROOT}" -type f | while read file
+    do
+      local mtime=$(date -R -r "${file}")
+      sed  -i "s/\[\[\s*${orig_title}\s*\]\]/\[\[${new_title}\]\]/g" "${file}"
+      touch -m -d "${mtime}" "${file}"
+    done
+    echo "${new_title}" > /tmp/RELINK
+}
+
+search () {
+    rg -l "${@}" | xargs  --no-run-if-empty --delimiter='\n' ls -1t
 }
 
 show () {
