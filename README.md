@@ -36,9 +36,8 @@ are in `markdown` syntax with one addition. Text in double square brackets `[[`
 and `]]` is expected to be the title of another note.
 
 When editing a note, if the title is changed then all links to that note are
-updated with the new title.  If the note was created by `gf` executed on a link
-to a note that did note exist, then the note currently being edited is also
-updated.
+updated with the new title.  This includes updating a link that was followed to
+a note that did not exist.
 
 ### Create a new note
 
