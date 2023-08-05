@@ -123,7 +123,7 @@ relink () {
 }
 
 search () {
-    rg -l "${@}" | xargs  --no-run-if-empty --delimiter='\n' ls -1t
+    rg -Sl "${@}" | xargs  --no-run-if-empty --delimiter='\n' ls -1t
 }
 
 show () {

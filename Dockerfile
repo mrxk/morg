@@ -12,6 +12,7 @@ RUN apt install -y vim fzf ripgrep
 RUN apt install -y python3 python3-pygments python3-venv
 RUN apt install -y doas
 RUN apt install -y less
+RUN apt install -y hugo
 
 RUN python3 -m venv /usr/lib/rich
 RUN /usr/lib/rich/bin/pip3 install rich
