@@ -18,6 +18,7 @@ usage () {
     >&2 echo "    keybindings    - show key bindings"
     >&2 echo "    search         - search for notes"
     >&2 echo "    show           - show all notes"
+    >&2 echo "    web            - show as website"
 }
 
 die() {
@@ -151,6 +152,41 @@ show () {
     done
 }
 
+web () {
+    local port="${1:-8080}"
+    local tmp=$(mktemp -d)
+    mkdir -p "${tmp}/notes"
+    find "${MORG_ROOT}" -type f -printf "%f\n" | while read file
+    do
+      local mtime=$(date -r "${file}" "+%Y-%m-%dT%H:%M:%S")
+      local title=$(head -1 "${file}")
+      local tags=$(grep "^tag:" "${file}" | sed 's/^tag:/ - /')
+      cat <<EOF > "${tmp}/notes/${file}.md"
+---
+date: ${mtime}
+title: ${title}
+tags:
+${tags}
+---
+EOF
+      cat "${file}" | sed '/^@/d'>> "${tmp}/notes/${file}.md"
+    done
+    cat <<EOF > "${tmp}/hugo.toml"
+title = "morg"
+
+[taxonomies]
+  tag = "tags"
+[params]
+  toc = true
+[[menu.main]]
+  name = "Tags"
+  identifier = "tags"
+  url = "/tags/"
+  weight = 1
+EOF
+    hugo server -D -c "${tmp}" --port "${port}" --themesDir /app/theme --bind 0.0.0.0 --config "${tmp}/hugo.toml" --theme whiteplain
+}
+
 cd "${MORG_ROOT}" || die "ERROR: ${MORG_ROOT} must be mounted to your data directory."
 
 case "${1:-}" in
@@ -172,6 +208,10 @@ case "${1:-}" in
         ;;
     "show")
         show
+        ;;
+    "web")
+        shift
+        web "${@}"
         ;;
     *)
         show

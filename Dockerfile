@@ -21,6 +21,7 @@ RUN echo "permit nopass morg as root" > /etc/doas.conf
 COPY --from=builder /tmp/tabular /home/morg/.vim/pack/tabular/start/tabular
 COPY --from=builder /tmp/fzf/plugin /home/morg/.vim/pack/fzf/start/fzf/plugin
 COPY --from=builder /tmp/fzf.vim /home/morg/.vim/pack/fzf.vim/start/fzf.vim
+COPY whiteplain /app/theme/whiteplain
 COPY view.py /app/view.py
 COPY morg.sh /app/morg.sh
 COPY vimrc /home/morg/.vimrc

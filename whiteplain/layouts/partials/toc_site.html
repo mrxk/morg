@@ -1,0 +1,13 @@
+<aside class="toc">
+  <ul>
+  {{ $currentDate := "" }}
+  {{ range .Site.RegularPages }}
+    {{ $newDate := .Date.Format (default "January 2, 2006" $.Site.Params.dateFormat) }}
+    {{ if ne $currentDate $newDate }}
+        <li><time>{{ .Date.Format (default "January 2, 2006" $.Site.Params.dateFormat) }}</time></li>
+        {{ $currentDate = $newDate }}
+    {{ end }}
+    <li><a href="{{ .Permalink | relURL }}">{{ .LinkTitle }}</a></li>
+  {{ end }}
+  </ul>
+</aside>
